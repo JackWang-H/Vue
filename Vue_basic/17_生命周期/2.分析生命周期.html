@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>分析生命周期</title>
+	<!-- 引入Vue -->
+	<script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+	<!-- 准备好一个容器-->
+	<div id="root" :x="n">
+		<h2 v-text="n"></h2>
+		<h2>当前的n值是：{{n}}</h2>
+		<button @click="add">点我n+1</button>
+		<button @click="bye">点我销毁vm</button>
+	</div>
+</body>
+
+<script type="text/javascript">
+	Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。
+
+	new Vue({
+		el: '#root',
+		// 用这种方式时，template会完全替换掉<div id="root"">,且这里必须有一个div根元素
+		// template:`
+		// 	<div>
+		// 		<h2>当前的n值是：{{n}}</h2>
+		// 		<button @click="add">点我n+1</button>
+		// 	</div>
+		// `,
+		data: {
+			n: 1
+		},
+		methods: {
+			add() {
+				console.log('add')
+				this.n++
+			},
+			bye() {
+				console.log('bye')
+				// 完全销毁一个实例。清理它与其它实例的连接，解绑它的全部指令及事件监听器。
+				// 这里的事件监听器指的是：自定义的事件监听器，不是<button @click="add">点我n+1</button>
+				// 这种原生事件绑定的
+				this.$destroy()
+			}
+		},
+		watch: {
+			n() {
+				console.log('n变了')
+			}
+		},
+		beforeCreate() {
+			console.log('beforeCreate')
+		},
+		created() {
+			console.log('created')
+		},
+		beforeMount() {
+			console.log('beforeMount')
+		},
+		mounted() {
+			console.log('mounted')
+		},
+		beforeUpdate() {
+			console.log('beforeUpdate')
+		},
+		updated() {
+			console.log('updated')
+		},
+		// 到了这阶段，数据不会发生更新
+		beforeDestroy() {
+			console.log('beforeDestroy')
+		},
+		destroyed() {
+			console.log('destroyed')
+		},
+	})
+</script>
+
+</html>
