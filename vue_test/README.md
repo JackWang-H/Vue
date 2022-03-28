@@ -577,7 +577,7 @@ module.exports = {
 
    const getters = {
    	bigSum(state){
-   		return state.sum * 10
+   		return state.sum * 10//必须写返回值
    	}
    }
 

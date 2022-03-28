@@ -9,7 +9,5 @@
 	export default {
 		name: 'App',
 		components: { Count },
-		mounted() {
-		},
 	}
 </script>
