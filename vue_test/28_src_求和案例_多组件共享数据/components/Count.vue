@@ -4,6 +4,7 @@
         <h1>当前求和为：{{sum}} </h1>
         <h1>当前和的10倍为:{{bigSum}} </h1>
         <h1>我在{{school}},学习{{subject}} </h1>
+        <h1>下方组件总人数是:{{personList.length}}</h1>
         <!-- 加: 是为了不返回字符串，也可以v-model.number -->
         <select v-model="n">
             <option :value="1">1</option>
@@ -30,7 +31,7 @@
             // ...mapState({ sum: 'sum', school: 'school', subject: 'subject' }),
 
             //借助mapState生成计算属性，从state中读取数据。（数组写法,只能是生成的计算属性名和从state中读取数据名是一样）
-            ...mapState(['sum', 'school', 'subject']),
+            ...mapState(['sum', 'school', 'subject', 'personList']),
 
             //借助mapGetters生成计算属性，从getters中读取数据。（对象写法）
             // ...mapGetters({bigSum:'bigSum'})
