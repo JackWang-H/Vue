@@ -14,25 +14,46 @@ VueRouter.prototype.replace = function replace( location) {
 return originalReplace.call(this,location).catch(err => err);};
 
 // 创建并暴露一个路由器
-export default new VueRouter({
+const router = new VueRouter({
+    // 路由器的两种工作模式：'history',,,'hash'
+    mode: 'history',
     routes: [
         {
             name:'guanyu',
             path: '/about',
-            component: About
+            component: About,
+            meta:{isAuth:true,title:'关于'},
         },
         {
+            name:'zhuye',
             path: '/home',
             component: Home,
+            meta:{title:'主页'},
             children: [
                 {
+                    name:'xinwen',
                     // 这里不需要加‘/’,因为遍历的时候自动加上
                     path: 'news',
-                    component: News
+                    component: News,
+                    meta: { isAuth: true, title: '新闻' },
+                    // 独享路由守卫
+                    // beforeEnter: (to,from,next) => {
+                    //     if (to.meta.isAuth) {
+                    //         if (localStorage.getItem('school') === 'atguigu') {
+                    //             next()
+                    //         } else {
+                    //             alert("学校名不对，无权限！")
+                    //         }
+                    //     } else {
+                    //         next()
+                    //     }
+                    // }
                 },
                 {
+                    name:'xiaoxi',
                     path: 'message',
                     component: Message,
+                    meta:{isAuth:true,title:'消息'},
                     children: [
                         {
                             name: 'xiangqing',
@@ -40,6 +61,7 @@ export default new VueRouter({
                             // path: 'detail/:id/:title',
                             path: 'detail',
                             component: Detail,
+                            meta:{isAuth:true,title:'详情'},
 
                             //props的第一种写法，值为对象，该对象中的所有key-value都会以props的形式传给Detail组件。
                             // 需要在Detail组件中接收
@@ -71,3 +93,25 @@ export default new VueRouter({
         }
     ]
 })
+
+//全局前置路由守卫--初始化的时候呗调用、 每次路由切换之前呗调用
+// to是目的路由，from是传过来的路由，next()代表可以跳转
+// router.beforeEach((to, from, next) => {
+//     // if (to.path === '/home/news' || to.path === '/home/message'),也可以是to.name
+//     // 当有多个需要配置路由守卫的时候没这样写十分的麻烦，所以，需要在路由中配饰meta属性
+//     if (to.meta.isAuth) {
+//         if (localStorage.getItem('school') === 'atguigu') {
+//             next()
+//         } else {
+//             alert("学校名不对，无权限！")
+//         }
+//     } else {
+//         next()
+//     }
+// })
+
+//全局后置路由守卫————初始化的时候被调用、每次路由切换之后被调用
+router.afterEach((to, from) => {
+    document.title = to.meta.title || '硅谷系统'
+})
+export default router
